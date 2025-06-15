@@ -1,0 +1,5 @@
+[phases.setup]
+nixPkgs = ['openjdk17']
+
+[variables]
+JAVA_HOME = '/nix/store/openjdk17'
