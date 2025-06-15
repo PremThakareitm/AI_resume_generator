@@ -1,0 +1,486 @@
+import React from "react";
+import "daisyui/dist/full.css";
+import { toPng } from "html-to-image";
+import { jsPDF } from "jspdf";
+import { useRef } from "react";
+import { useReactToPrint } from "react-to-print";
+
+const Resume = ({ data }) => {
+  const resumeRef = useRef(null);
+
+  // Helper function to safely access data regardless of structure
+  const resumeData = data?.data || data || {};
+
+  // Helper to safely get personal information
+  const getPersonalInfo = (field, defaultValue = "") => {
+    return resumeData?.personalInformation?.[field] || defaultValue;
+  };
+
+  // Helper to safely get skills
+  const getSkills = () => {
+    return resumeData?.skills || [];
+  };
+
+  // Helper to safely get experiences
+  const getExperiences = () => {
+    return resumeData?.experience || [];
+  };
+
+  // Helper to safely get education
+  const getEducation = () => {
+    return resumeData?.education || [];
+  };
+
+  // Helper to safely get projects
+  const getProjects = () => {
+    return resumeData?.projects || [];
+  };
+
+  // Helper to safely get certifications
+  const getCertifications = () => {
+    return resumeData?.certifications || [];
+  };
+
+  // Helper to safely get achievements
+  const getAchievements = () => {
+    return resumeData?.achievements || [];
+  };
+
+  // Helper to safely get languages
+  const getLanguages = () => {
+    return resumeData?.languages || [];
+  };
+
+  const handleDownloadPdf = () => {
+    const resumeData = data?.data || data;
+    const fullName = resumeData?.personalInformation?.fullName || "Resume";
+
+    toPng(resumeRef.current, { quality: 1.0 })
+      .then((dataUrl) => {
+        const pdf = new jsPDF("p", "mm", "a4");
+        pdf.addImage(dataUrl, "PNG", 10, 10, 190, 0);
+        pdf.save(`${fullName}.pdf`);
+      })
+      .catch((err) => {
+        console.error("Error generating PDF", err);
+      });
+  };
+
+  const handlePrint = useReactToPrint({
+    content: () => resumeRef.current,
+    documentTitle: `${getPersonalInfo("fullName", "Resume")}_Resume`,
+  });
+
+  return (
+    <>
+      <div
+        ref={resumeRef}
+        className="max-w-4xl mx-auto p-8 bg-white text-black border border-gray-200"
+        style={{fontFamily: 'Arial, sans-serif', lineHeight: '1.4'}}
+      >
+        {/* Header Section - Matching the image style */}
+        <div className="mb-6 border-b border-gray-300 pb-3">
+          <h1 className="text-2xl font-bold text-center">
+            {getPersonalInfo("fullName", "Your Name")} <span className="font-normal">[Professional]</span>
+          </h1>
+          
+          <div className="flex justify-center text-sm mt-1">
+            <span>{getPersonalInfo("location", "Los Angeles, CA")}</span>
+            {getPersonalInfo("linkedIn") && (
+              <> | <a href={getPersonalInfo("linkedIn")} className="text-blue-600 hover:underline">LinkedIn</a></>
+            )}
+            {getPersonalInfo("phoneNumber") && (
+              <> | <span>{getPersonalInfo("phoneNumber")}</span></>
+            )}
+            {getPersonalInfo("email") && (
+              <> | <a href={`mailto:${getPersonalInfo("email")}`} className="text-blue-600 hover:underline">{getPersonalInfo("email")}</a></>
+            )}
+          </div>
+        </div>
+
+        {/* WORK EXPERIENCE - Bold uppercase header like in image */}
+        <div className="mb-4">
+          <h2 className="text-base font-bold uppercase mb-1">Work Experience</h2>
+          
+          {getExperiences().length > 0 ? (
+            getExperiences().map((exp, index) => (
+              <div key={index} className="mb-4">
+                <div className="grid grid-cols-4">
+                  <div className="col-span-2">
+                    <span className="font-bold">{exp.company}</span>
+                    <br />
+                    <span className="italic">{exp.jobTitle}</span>
+                  </div>
+                  <div className="col-span-2 text-right">
+                    <span>{exp.location}</span>
+                    <br />
+                    <span className="italic">{exp.duration}</span>
+                  </div>
+                </div>
+                <ul className="list-disc ml-5 mt-1">
+                  <li className="text-sm">{exp.responsibility}</li>
+                </ul>
+              </div>
+            ))
+          ) : (
+            <p className="text-sm text-gray-500">Work experience will appear here based on the job description.</p>
+          )}
+        </div>
+
+        {/* LEADERSHIP EXPERIENCE (if available) */}
+        {getAchievements().length > 0 && (
+          <div className="mb-4">
+            <h2 className="text-base font-bold uppercase mb-1">Leadership Experience</h2>
+            {getAchievements().map((ach, index) => (
+              <div key={index} className="mb-4">
+                <div className="grid grid-cols-4">
+                  <div className="col-span-2">
+                    <span className="font-bold">{ach.title}</span>
+                    <br />
+                    <span className="italic">Professional Development</span>
+                  </div>
+                  <div className="col-span-2 text-right">
+                    <span>Location</span>
+                    <br />
+                    <span className="italic">{ach.year}</span>
+                  </div>
+                </div>
+                <ul className="list-disc ml-5 mt-1">
+                  <li className="text-sm">{ach.extraInformation}</li>
+                </ul>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* EDUCATION */}
+        <div className="mb-4">
+          <h2 className="text-base font-bold uppercase mb-1">Education</h2>
+          
+          {getEducation().length > 0 ? (
+            getEducation().map((edu, index) => (
+              <div key={index} className="mb-2">
+                <div className="grid grid-cols-4">
+                  <div className="col-span-2">
+                    <span className="font-bold">{edu.university}</span>
+                    <br />
+                    <span className="italic">{edu.degree}</span>
+                  </div>
+                  <div className="col-span-2 text-right">
+                    <span>{edu.location}</span>
+                    <br />
+                    <span>Graduation Date: {edu.graduationYear}</span>
+                  </div>
+                </div>
+              </div>
+            ))
+          ) : (
+            <p className="text-sm text-gray-500">Education details will appear here.</p>
+          )}
+        </div>
+
+        {/* SKILLS & INTERESTS */}
+        <div className="mb-4">
+          <h2 className="text-base font-bold uppercase mb-1">Skills & Interests</h2>
+          
+          <div>
+            <span className="font-bold">Skills:</span> {' '}
+            {getSkills().length > 0 
+              ? getSkills().map(skill => skill.title).join(' | ') 
+              : "Relevant skills will appear here."}
+          </div>
+          
+          {getProjects().length > 0 && (
+            <div className="mt-1">
+              <span className="font-bold">Interests:</span> {' '}
+              {getProjects().map(project => project.title).join(', ')}
+            </div>
+          )}
+        </div>
+
+        {/* Certifications - Optional */}
+        {getCertifications().length > 0 && (
+          <div className="mb-4">
+            <h2 className="text-base font-bold uppercase mb-1">Certifications</h2>
+            <ul className="list-disc ml-5">
+              {getCertifications().map((cert, index) => (
+                <li key={index} className="text-sm">
+                  <span className="font-medium">{cert.title}</span> - {cert.issuingOrganization}, {cert.year}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+
+      <section className="flex justify-center mt-4 gap-4">
+        <button onClick={handleDownloadPdf} className="btn btn-primary">
+          Download PDF
+        </button>
+        <button
+          onClick={handlePrint}
+          className="btn btn-secondary"
+        >
+          Print Resume
+        </button>
+      </section>
+    </>
+  );
+  return (
+    <>
+      <div
+        ref={resumeRef}
+        className="max-w-4xl mx-auto p-8 bg-white text-black border border-gray-200"
+        style={{fontFamily: 'Arial, sans-serif', lineHeight: '1.4'}}
+      >
+        {/* Header Section - Similar to the image */}
+        <div className="mb-4">
+          <h1 className="text-3xl font-bold text-center mb-2">
+            {getPersonalInfo("fullName", "Your Name")} 
+            <span className="font-normal text-gray-600">[Professional]</span>
+          </h1>
+          
+          <div className="flex justify-center text-sm">
+            <span>{getPersonalInfo("location", "City, State")} | </span>
+            
+            {getPersonalInfo("linkedIn") && (
+              <a
+                href={getPersonalInfo("linkedIn")}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 hover:underline mx-1"
+              >
+                LinkedIn
+              </a>
+            )} | 
+            
+            {getPersonalInfo("phoneNumber") && (
+              <span className="mx-1">{getPersonalInfo("phoneNumber")}</span>
+            )} | 
+            
+            {getPersonalInfo("email") && (
+              <a
+                href={`mailto:${getPersonalInfo("email")}`}
+                className="text-blue-600 hover:underline mx-1"
+              >
+                {getPersonalInfo("email")}
+              </a>
+            )}
+          </div>
+        </div>
+          </div>
+        </div>
+
+        <div className="divider"></div>
+
+        {/* Summary Section */}
+        <section>
+          <h2 className="text-2xl font-semibold text-secondary">Summary</h2>
+          <p className="text-gray-700 dark:text-gray-300">
+            {resumeData.summary || "Professional summary will appear here."}
+          </p>
+        </section>
+
+        <div className="divider"></div>
+
+        {/* Skills Section */}
+        <section>
+          <h2 className="text-2xl font-semibold text-secondary">Skills</h2>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-2">
+            {getSkills().length > 0 ? (
+              getSkills().map((skill, index) => (
+                <div
+                  key={index}
+                  className="badge badge-outline badge-lg px-4 py-2"
+                >
+                  {skill.title}{" "}
+                  {skill.level && (
+                    <>
+                      -{" "}
+                      <span className="ml-1 font-semibold">{skill.level}</span>
+                    </>
+                  )}
+                </div>
+              ))
+            ) : (
+              <p className="text-gray-500 col-span-3">
+                Skills will appear here.
+              </p>
+            )}
+          </div>
+        </section>
+
+        <div className="divider"></div>
+
+        {/* Experience Section */}
+        <section>
+          <h2 className="text-2xl font-semibold text-secondary">Experience</h2>
+          {getExperiences().length > 0 ? (
+            getExperiences().map((exp, index) => (
+              <div
+                key={index}
+                className="mb-4 p-4 rounded-lg shadow-md bg-base-200 border border-gray-300 dark:border-gray-700"
+              >
+                <h3 className="text-xl font-bold">{exp.jobTitle}</h3>
+                <p className="text-gray-500">
+                  {exp.company} | {exp.location}
+                </p>
+                <p className="text-gray-400">{exp.duration}</p>
+                <p className="mt-2 text-gray-600 dark:text-gray-300">
+                  {exp.responsibility}
+                </p>
+              </div>
+            ))
+          ) : (
+            <p className="text-gray-500">Work experience will appear here.</p>
+          )}
+        </section>
+
+        <div className="divider"></div>
+
+        {/* Education Section */}
+        <section>
+          <h2 className="text-2xl font-semibold text-secondary">Education</h2>
+          {getEducation().length > 0 ? (
+            getEducation().map((edu, index) => (
+              <div
+                key={index}
+                className="mb-4 p-4 rounded-lg shadow-md bg-base-200 border border-gray-300 dark:border-gray-700"
+              >
+                <h3 className="text-xl font-bold">{edu.degree}</h3>
+                <p className="text-gray-500">
+                  {edu.university}, {edu.location}
+                </p>
+                <p className="text-gray-400">
+                  🎓 Graduation Year: {edu.graduationYear}
+                </p>
+              </div>
+            ))
+          ) : (
+            <p className="text-gray-500">Education details will appear here.</p>
+          )}
+        </section>
+
+        <div className="divider"></div>
+
+        {/* Certifications Section */}
+        <section>
+          <h2 className="text-2xl font-semibold text-secondary">
+            Certifications
+          </h2>
+          {getCertifications().length > 0 ? (
+            getCertifications().map((cert, index) => (
+              <div
+                key={index}
+                className="mb-4 p-4 rounded-lg shadow-md bg-base-200 border border-gray-300 dark:border-gray-700"
+              >
+                <h3 className="text-xl font-bold">{cert.title}</h3>
+                <p className="text-gray-500">
+                  {cert.issuingOrganization} - {cert.year}
+                </p>
+              </div>
+            ))
+          ) : (
+            <p className="text-gray-500">Certifications will appear here.</p>
+          )}
+        </section>
+
+        <div className="divider"></div>
+
+        {/* Projects Section */}
+        <section>
+          <h2 className="text-2xl font-semibold text-secondary">Projects</h2>
+          {getProjects().length > 0 ? (
+            getProjects().map((proj, index) => (
+              <div
+                key={index}
+                className="mb-4 p-4 rounded-lg shadow-md bg-base-200 border border-gray-300 dark:border-gray-700"
+              >
+                <h3 className="text-xl font-bold">{proj.title}</h3>
+                <p className="text-gray-600 dark:text-gray-300">
+                  {proj.description}
+                </p>
+                <p className="text-gray-500">
+                  🛠 Technologies:{" "}
+                  {Array.isArray(proj.technologiesUsed)
+                    ? proj.technologiesUsed.join(", ")
+                    : proj.technologiesUsed}
+                </p>
+                {proj.githubLink && (
+                  <a
+                    href={proj.githubLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-500 hover:underline"
+                  >
+                    🔗 GitHub Link
+                  </a>
+                )}
+              </div>
+            ))
+          ) : (
+            <p className="text-gray-500">Projects will appear here.</p>
+          )}
+        </section>
+
+        <div className="divider"></div>
+
+        {/* Achievements Section */}
+        <section>
+          <h2 className="text-2xl font-semibold text-secondary">
+            Achievements
+          </h2>
+          {getAchievements().length > 0 ? (
+            getAchievements().map((ach, index) => (
+              <div
+                key={index}
+                className="mb-4 p-4 rounded-lg shadow-md bg-base-200 border border-gray-300 dark:border-gray-700"
+              >
+                <h3 className="text-xl font-bold">{ach.title}</h3>
+                <p className="text-gray-500">{ach.year}</p>
+                <p className="text-gray-600 dark:text-gray-300">
+                  {ach.extraInformation}
+                </p>
+              </div>
+            ))
+          ) : (
+            <p className="text-gray-500">Achievements will appear here.</p>
+          )}
+        </section>
+
+        <div className="divider"></div>
+
+        {/* Languages Section */}
+        <section>
+          <h2 className="text-2xl font-semibold text-secondary">Languages</h2>
+          {getLanguages().length > 0 ? (
+            <ul className="list-disc pl-6 text-gray-700 dark:text-gray-300">
+              {getLanguages().map((lang, index) => (
+                <li key={index}>{lang.name}</li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-gray-500">Languages will appear here.</p>
+          )}
+        </section>
+      </div>
+
+      <section className="flex justify-center mt-4 gap-4">
+        <button onClick={handleDownloadPdf} className="btn btn-primary">
+          Download PDF
+        </button>
+        <button
+          onClick={useReactToPrint({
+            content: () => resumeRef.current,
+            documentTitle: `${getPersonalInfo("fullName", "Resume")}_Resume`,
+          })}
+          className="btn btn-secondary"
+        >
+          Print Resume
+        </button>
+      </section>
+    </>
+  );
+};
+
+export default Resume;

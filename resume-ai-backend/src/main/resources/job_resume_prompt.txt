@@ -1,0 +1,211 @@
+Generate a comprehensive, detailed JSON resume tailored to the job description. The resume MUST contain AT LEAST 500 WORDS total with extensive content in each section.
+
+JOB ANALYSIS REQUIREMENTS:
+1. THOROUGHLY ANALYZE the job description to identify:
+   - Primary responsibilities and deliverables
+   - Required technical skills and qualifications
+   - Preferred experience levels and domains
+   - Soft skills and competencies valued by the employer
+   - Industry-specific knowledge requirements
+   - Company values and cultural preferences
+   - Industry trends and challenges relevant to the position
+   - Technologies and methodologies mentioned or implied
+
+CONTENT ENHANCEMENT REQUIREMENTS:
+1. EXPAND every section with detailed, relevant content based on the job description
+2. RESEARCH the industry, role, and required skills to add current, relevant information
+3. INCORPORATE industry best practices, methodologies, and technologies relevant to the position
+4. ADD specific, detailed examples and metrics that showcase expertise in required areas
+5. ENSURE comprehensive coverage of all skills and qualifications mentioned in the job description
+
+CRITICAL REQUIREMENTS:
+1. PRESERVE ALL USER-PROVIDED INFORMATION EXACTLY AS GIVEN - This is the absolute top priority
+2. For EDUCATION and WORK EXPERIENCE: Copy user-provided information VERBATIM without ANY modifications whatsoever
+3. NEVER reformat, reword, or "improve" ANY education or work details provided by the user
+4. Extract keywords and requirements from the job description to supplement where user info is missing
+5. Use the EXACT JOB TITLE from the job description next to the person's name
+6. Include ALL standard resume sections listed below, even with minimal user input
+7. Position the candidate as an ideal match for this specific role
+
+REQUIRED SECTIONS:
+- Contact Information - Use exactly what the user provides
+- Professional Summary - Detailed overview (4-6 compelling lines) highlighting precise qualifications for the role
+- Skills - Comprehensive list of technical, soft, and domain-specific skills (10-15 skills) with categorization
+- Work Experience - Use EXACTLY what user provides; supplement only if missing; add detailed responsibility descriptions
+- Education - Use EXACTLY what user provides; supplement only if missing; add relevant coursework if appropriate
+- Projects - 2-4 detailed projects showcasing job-required skills with comprehensive descriptions
+- Achievements - Notable accomplishments with measurable results directly relevant to the position
+- Certifications - Industry-specific certifications that enhance credibility for the role
+- Professional Development - Relevant training, workshops, or continuing education
+- Technical Proficiencies - Detailed breakdown of technical competencies and proficiency levels
+- Languages - Language skills with proficiency levels if relevant to the position
+
+KEY GUIDELINES:
+- NEVER modify any user-provided information - especially education and work experience
+- COPY user education information VERBATIM (exact degrees, universities, dates, format)
+- COPY user work experience VERBATIM (exact job titles, companies, dates, descriptions)
+- RESEARCH current industry trends, technologies, and best practices related to the job
+- ADD detailed, industry-specific knowledge and terminology throughout the resume
+- EXPAND each section with comprehensive content related to job requirements
+- CREATE detailed descriptions that demonstrate deep understanding of the role
+- INCORPORATE current methodologies, tools, and frameworks relevant to the position
+- HIGHLIGHT the user's qualifications that directly match job requirements
+- ENHANCE the resume with skills/qualifications from the job description that align with user's background
+- ANALYZE job responsibilities and reflect them in the summary and skills sections
+- INCORPORATE industry-specific terminology from the job description
+- EMPHASIZE achievements that demonstrate capabilities required by the job
+- Only generate content where user has NOT provided information
+- Include quantifiable metrics and achievements in descriptions
+- ENSURE TOTAL CONTENT IS AT LEAST 500 WORDS
+
+Job Description:
+"{{jobDescription}}"
+
+User Profile:
+"{{userDescription}}"
+
+JSON STRUCTURE:
+personalInformation:
+- Use ALL contact details EXACTLY as provided by user
+- Create professional URLs only if missing from user information
+
+summary:
+- 3-4 compelling lines focusing on job requirements
+- Include keywords from job description
+- Match user's background with job needs
+- Emphasize user's most relevant qualifications
+
+skills: 
+- ANALYZE the job description for required and preferred skills
+- RESEARCH current industry trends to identify additional relevant skills
+- List at least 10-15 technical and soft skills directly relevant to the job description
+- CATEGORIZE skills into clear sections (technical, domain knowledge, soft skills, tools)
+- PRIORITIZE skills mentioned specifically in the "Requirements" or "Qualifications" sections
+- INCLUDE skills mentioned in the user profile that match job requirements
+- ADD industry-specific skills that would be valuable for the position
+- RESEARCH current versions or trends in relevant technologies
+- BALANCE technical skills with soft skills valued in the job description
+- ADD proficiency levels for technical skills where appropriate
+
+experience:
+- CRITICAL: If user provides ANY work experience, copy it EXACTLY word-for-word
+- DO NOT modify, reformat, or "improve" user-provided work experience
+- ONLY create work experiences if user provides NONE
+- If user provides experience: SUPPLEMENT with additional achievements/responsibilities that align with job requirements
+- RESEARCH the industry to identify relevant responsibilities and achievements
+- If creating: Include relevant positions showing clear progression toward target role
+- ADD detailed responsibilities that precisely match job requirements
+- INCORPORATE industry-specific terminology and methodologies
+- INCLUDE at least 4-6 bullet points per role with quantifiable achievements
+- HIGHLIGHT projects or initiatives that demonstrate required competencies
+- EMPHASIZE leadership, collaboration, and problem-solving applicable to the position
+
+education:
+- CRITICAL: If user provides ANY education information, copy it EXACTLY word-for-word
+- DO NOT modify, reformat, or "improve" user-provided education details 
+- ONLY create education entries if user provides NONE
+- If creating: Include relevant degree, university name, location, and graduation year
+- If appropriate, ADD relevant coursework specifically related to job requirements
+- RESEARCH typical educational backgrounds for the position/industry
+- Include honors, awards, or academic achievements if creating education entries
+
+projects: Include 2-4 detailed projects that directly demonstrate key job requirements:
+- ANALYZE the job description for specific requirements/technologies the employer values
+- RESEARCH current industry best practices and methodologies for similar projects
+- title: Concise, descriptive names that highlight relevance to the job
+- description: Provide comprehensive details (4-6 lines each) about:
+  * Business problem or challenge addressed
+  * Technical implementation with specific methodologies
+  * Your specific role and contributions
+  * Obstacles overcome during implementation
+  * Measurable outcomes and business impact
+  * How the project relates to the target position
+- technologiesUsed: Include comprehensive list of technologies mentioned in job description
+- DETAIL your application of specific technical skills required by the job
+- ADD industry-standard methodologies and frameworks relevant to the position
+- link: GitHub/demo URL if applicable
+- Choose/create projects that demonstrate capabilities for core job functions
+
+certifications: Include comprehensive, relevant credentials:
+- RESEARCH industry-standard certifications for the specific role/industry
+- title: Use exact certification names from official certifying bodies
+- organization: Include the precise issuing organization
+- year: Use recent years in appropriate format
+- Include 2-4 certifications most valuable for the position
+- ADD a brief description of the certification's relevance to the role
+
+achievements: Include detailed professional accomplishments:
+- ANALYZE job requirements and highlight achievements that demonstrate required competencies
+- Include 3-5 significant achievements with specific metrics and outcomes
+- FOCUS on results that directly relate to job responsibilities
+- QUANTIFY impact with percentages, numbers, and business results
+- EMPHASIZE leadership, innovation, and problem-solving where relevant
+- DETAIL recognition received for accomplishments
+
+professional development: Include relevant training and continuing education:
+- ADD workshops, seminars, or training directly relevant to the position
+- INCLUDE ongoing learning initiatives in required technologies/methodologies
+- DEMONSTRATE commitment to staying current in the field
+
+languages: If relevant to the position:
+- List languages with accurate proficiency levels
+- PRIORITIZE languages specifically mentioned in job description
+- Use standard proficiency scales (Native, Fluent, Proficient, Intermediate, Basic)
+
+Job Description:
+"{{jobDescription}}"
+
+User Profile:
+"{{userDescription}}"
+
+FINAL CHECKS:
+1. VERIFY user-provided education is copied WORD-FOR-WORD with NO changes whatsoever
+2. VERIFY user-provided work experience is copied WORD-FOR-WORD with NO changes
+3. CONFIRM the job title matches the job description exactly
+4. VERIFY the summary is comprehensive (4-6 lines) and directly addresses key job requirements
+5. ENSURE skills section includes at least 10-15 relevant skills specifically mentioned in the job description
+6. CHECK that projects have detailed descriptions (4-6 lines each) demonstrating capabilities required by the job
+7. VERIFY all content incorporates industry-specific terminology from research and job description
+8. CHECK that experience descriptions include 4-6 detailed bullet points with specific achievements
+9. VERIFY the content is relevant to the specific role being applied for
+10. ENSURE the resume positions the candidate as an expert qualified for THIS SPECIFIC job
+11. COUNT WORDS and VERIFY the total content is AT LEAST 500 WORDS
+12. ENSURE each section is thoroughly developed with comprehensive details
+13. CHECK that no placeholder text remains
+
+OUTPUT FORMAT:
+Return valid JSON only with this structure:
+```json
+{
+  "personalInformation": {
+    "fullName": "Example Name",
+    "email": "example@email.com",
+    "phoneNumber": "(123) 456-7890",
+    "location": "City, State",
+    "linkedIn": "linkedin.com/in/example",
+    "portfolio": "github.com/example"
+  },
+  "summary": "Results-driven Software Engineer with 5+ years experience in full-stack web development...",
+  "skills": [
+    {"title": "React.js"},
+    {"title": "Node.js"},
+    {"title": "REST APIs"}
+  ],
+  "experience": [
+    {
+      "jobTitle": "Senior Frontend Developer",
+      "company": "Tech Solutions Inc.",
+      "location": "San Francisco, CA", 
+      "duration": "January 2022 - Present",
+      "responsibility": "Led development of responsive web applications increasing user engagement by 35%..."
+    }
+  ],
+  "education": [...],
+  "projects": [...],
+  "certifications": [...],
+  "achievements": [...],
+  "languages": [...]
+}
+```
+
+Do not include any text outside the JSON code block. Ensure proper formatting with all required fields and valid syntax.
