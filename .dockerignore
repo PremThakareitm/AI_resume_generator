@@ -1,10 +1,13 @@
-# Exclude everything
-*
-# Include only the backend directory
-!resume-ai-backend/
-# Exclude unnecessary files from backend
-resume-ai-backend/.git/
-resume-ai-backend/target/
-resume-ai-backend/.idea/
-resume-ai-backend/*.iml
-resume-ai-backend/.settings/
+# Exclude frontend and unnecessary files
+resume_frontend/
+.git/
+.idea/
+.settings/
+.vscode/
+*.iml
+
+# Don't exclude any backend files
+!/resume-ai-backend/
+!/resume-ai-backend/.mvn/
+!/resume-ai-backend/.mvn/wrapper/
+!/resume-ai-backend/.mvn/wrapper/maven-wrapper.properties

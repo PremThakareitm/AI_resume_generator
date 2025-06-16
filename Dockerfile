@@ -1,11 +1,17 @@
-FROM maven:3.9.6-eclipse-temurin-17 AS build
-WORKDIR /app
-COPY resume-ai-backend/ .
-RUN chmod +x ./mvnw
-RUN ./mvnw clean package -DskipTests
+FROM openjdk:17-jdk
 
-FROM eclipse-temurin:17-jre-jammy
+# Set working directory
 WORKDIR /app
-COPY --from=build /app/target/*.jar app.jar
+
+# Copy the backend directory
+COPY resume-ai-backend/ /app/
+
+# Make mvnw executable
+RUN chmod +x ./mvnw
+
+# Build with maven using settings.xml
+RUN ./mvnw -s settings.xml clean package -DskipTests
+
+# Run the application
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
+CMD find target -name "*.jar" -exec java -jar {} \;
