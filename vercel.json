@@ -1,0 +1,18 @@
+{
+  "buildCommand": "cd resume-ai-backend && chmod +x mvnw && ./mvnw clean package -DskipTests",
+  "outputDirectory": "resume-ai-backend/target",
+  "framework": "other",
+  "installCommand": "cd resume-ai-backend && chmod +x mvnw && ./mvnw install -DskipTests",
+  "builds": [
+    {
+      "src": "resume-ai-backend/src/main/java/com/resume/backend/ResumeAiBackendApplication.java",
+      "use": "@vercel/java"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "resume-ai-backend/src/main/java/com/resume/backend/ResumeAiBackendApplication.java"
+    }
+  ]
+}
