@@ -1,11 +1,10 @@
 {
   "$schema": "https://railway.app/railway.schema.json",
   "build": {
-    "builder": "NIXPACKS",
-    "buildCommand": "cd resume-ai-backend && export JAVA_HOME=/nix/store/openjdk17 && chmod +x ./mvnw && ./mvnw clean package -DskipTests"
+    "builder": "DOCKERFILE",
+    "dockerfilePath": "Dockerfile"
   },
   "deploy": {
-    "startCommand": "cd resume-ai-backend && java -jar target/*.jar",
     "restartPolicyType": "ON_FAILURE",
     "restartPolicyMaxRetries": 3
   }

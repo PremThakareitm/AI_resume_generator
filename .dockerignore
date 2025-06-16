@@ -1,0 +1,17 @@
+# Ignore everything
+*
+
+# Except the necessary files and directories
+!Dockerfile
+!resume-ai-backend/
+!system.properties
+
+# Now ignore unnecessary files in the allowed directories
+resume-ai-backend/target/
+resume-ai-backend/.git/
+resume-ai-backend/.settings/
+resume-ai-backend/.idea/
+**/node_modules/
+**/.env*
+**/dist/
+**/*.iml
