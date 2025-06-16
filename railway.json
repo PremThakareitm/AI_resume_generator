@@ -2,7 +2,7 @@
   "$schema": "https://railway.app/railway.schema.json",
   "build": {
     "builder": "NIXPACKS",
-    "buildCommand": "cd resume-ai-backend && chmod +x ./mvnw && ./mvnw clean package -DskipTests"
+    "buildCommand": "cd resume-ai-backend && export JAVA_HOME=/nix/store/openjdk17 && chmod +x ./mvnw && ./mvnw clean package -DskipTests"
   },
   "deploy": {
     "startCommand": "cd resume-ai-backend && java -jar target/*.jar",

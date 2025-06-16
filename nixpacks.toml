@@ -3,3 +3,6 @@ nixPkgs = ['openjdk17']
 
 [variables]
 JAVA_HOME = '/nix/store/openjdk17'
+
+[start]
+cmd = "cd resume-ai-backend && java -jar target/*.jar"
