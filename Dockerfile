@@ -1,17 +1,11 @@
-FROM openjdk:17-slim
-
+FROM maven:3.9.6-eclipse-temurin-17 AS build
 WORKDIR /app
+COPY resume-ai-backend/ .
+RUN chmod +x ./mvnw
+RUN ./mvnw clean package -DskipTests
 
-# Copy the entire repository
-COPY . .
-
-# Set execute permissions on mvnw and build the application
-RUN chmod +x ./resume-ai-backend/mvnw && \
-    cd resume-ai-backend && \
-    ./mvnw clean package -DskipTests
-
-# Set the working directory to the backend folder
-WORKDIR /app/resume-ai-backend
-
-# Run the application
-CMD ["java", "-jar", "target/*.jar"]
+FROM eclipse-temurin:17-jre-jammy
+WORKDIR /app
+COPY --from=build /app/target/*.jar app.jar
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "app.jar"]
