@@ -7,7 +7,23 @@ An AI-powered resume generator that creates job-tailored resumes through a moder
 This project consists of two main parts:
 
 1. **Frontend (React/Vite)**: A modern UI with a landing page and resume generation capabilities
-2. **Backend (Java Spring Boot)**: AI-powered resume generation API using Spring AI and Ollama
+2. **Backend (Java Spring Boot)**: AI-powered resume generation API using OpenAI
+
+## Deployment
+
+This project is set up for deployment with:
+
+- **Frontend**: Deploy to Vercel
+- **Backend**: Deploy to Railway, Render, or other Java-friendly platforms
+
+See the [Vercel Deployment Guide](/vercel-deployment-guide.md) for complete instructions.
+
+## Project Structure
+
+```
+resume_frontend/          # React/Vite frontend application
+resume-ai-backend/        # Java Spring Boot backend application
+```
 
 ## Local Development
 

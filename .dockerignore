@@ -1,12 +1,14 @@
 # Exclude frontend and unnecessary files
+
 resume_frontend/
 .git/
 .idea/
 .settings/
 .vscode/
-*.iml
+\*.iml
 
 # Don't exclude any backend files
+
 !/resume-ai-backend/
 !/resume-ai-backend/.mvn/
 !/resume-ai-backend/.mvn/wrapper/

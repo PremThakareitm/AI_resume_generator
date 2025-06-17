@@ -23,9 +23,13 @@ CRITICAL REQUIREMENTS:
 2. For EDUCATION and WORK EXPERIENCE: Copy user-provided information VERBATIM without ANY modifications whatsoever
 3. NEVER reformat, reword, or "improve" ANY education or work details provided by the user
 4. Extract keywords and requirements from the job description to supplement where user info is missing
-5. Use the EXACT JOB TITLE from the job description next to the person's name
+5. ALWAYS include the EXACT JOB TITLE from the job description next to the person's name in the fullName field
 6. Include ALL standard resume sections listed below, even with minimal user input
 7. Position the candidate as an ideal match for this specific role
+8. ALWAYS FILL ALL SECTIONS, especially achievements, languages, and certifications - NEVER leave any section empty
+9. Use job description, industry research, and role requirements to create content for ALL empty sections
+10. "Leadership & Achievements" section MUST contain AT LEAST 3 detailed achievements with metrics
+11. Format the fullName field as "User Name | Exact Job Title from Job Description"
 
 REQUIRED SECTIONS:
 - Contact Information - Use exactly what the user provides
@@ -68,16 +72,29 @@ JSON STRUCTURE:
 personalInformation:
 - Use ALL contact details EXACTLY as provided by user
 - Create professional URLs only if missing from user information
+- CRITICAL: Ensure fullName includes the EXACT job title from the job description (e.g., "John Smith | Senior Software Engineer")
+- Format fullName as "User Name | Exact Job Title from Job Description"
+- For fullName field, DO NOT use generic title; instead, extract the SPECIFIC job title from the job description
 
 summary:
-- 3-4 compelling lines focusing on job requirements
-- Include keywords from job description
-- Match user's background with job needs
-- Emphasize user's most relevant qualifications
+- REQUIRED: This section MUST NEVER be left empty or generic - create a highly tailored, impactful summary
+- Create 4-6 compelling lines focusing on core job requirements
+- Include high-value keywords and phrases directly from the job description
+- Match user's background with job needs using industry-specific terminology
+- Emphasize user's most relevant qualifications for THIS SPECIFIC position
+- POSITION the candidate as an ideal match for the role's requirements
+- If user provides minimal information:
+  * RESEARCH the industry and role to identify key professional attributes highly valued for this position
+  * INCORPORATE terminology and concepts directly from the job description
+  * EMPHASIZE experience and skills most relevant to the specific role
+  * HIGHLIGHT qualifications that address the employer's stated needs
+  * INCLUDE industry-specific achievements or expertise that demonstrate value
+  * CRAFT a compelling professional narrative that positions the candidate as qualified
 
 skills: 
-- ANALYZE the job description for required and preferred skills
-- RESEARCH current industry trends to identify additional relevant skills
+- REQUIRED: This section MUST NEVER contain fewer than 10-15 skills - ALWAYS provide comprehensive skill coverage
+- ANALYZE the job description for required and preferred skills (both explicitly stated and implied)
+- RESEARCH current industry trends to identify additional relevant skills for this specific role
 - List at least 10-15 technical and soft skills directly relevant to the job description
 - CATEGORIZE skills into clear sections (technical, domain knowledge, soft skills, tools)
 - PRIORITIZE skills mentioned specifically in the "Requirements" or "Qualifications" sections
@@ -86,6 +103,14 @@ skills:
 - RESEARCH current versions or trends in relevant technologies
 - BALANCE technical skills with soft skills valued in the job description
 - ADD proficiency levels for technical skills where appropriate
+- If user provides minimal skill information:
+  * THOROUGHLY analyze the job description to extract ALL explicit and implicit skill requirements
+  * RESEARCH industry standards for this exact role to identify essential skills needed
+  * ENSURE inclusion of both technical and soft skills in appropriate proportions
+  * IDENTIFY tools, technologies, methodologies, and frameworks mentioned in the job description
+  * ADD domain-specific knowledge areas that would be valuable based on industry research
+  * INCLUDE both fundamental and advanced skills appropriate for the role's seniority level
+  * CATEGORIZE skills by relevance and importance to the specific position
 
 experience:
 - CRITICAL: If user provides ANY work experience, copy it EXACTLY word-for-word
@@ -110,6 +135,7 @@ education:
 - Include honors, awards, or academic achievements if creating education entries
 
 projects: Include 2-4 detailed projects that directly demonstrate key job requirements:
+- REQUIRED: This section MUST NEVER be left empty - generate projects if user provides none
 - ANALYZE the job description for specific requirements/technologies the employer values
 - RESEARCH current industry best practices and methodologies for similar projects
 - title: Concise, descriptive names that highlight relevance to the job
@@ -125,32 +151,84 @@ projects: Include 2-4 detailed projects that directly demonstrate key job requir
 - ADD industry-standard methodologies and frameworks relevant to the position
 - link: GitHub/demo URL if applicable
 - Choose/create projects that demonstrate capabilities for core job functions
+- If user provides no projects:
+  * CREATE 2-4 detailed, realistic projects that demonstrate key skills from the job description
+  * ENSURE projects showcase the exact technologies, tools, and methodologies mentioned in the job
+  * DESIGN projects that solve industry-specific problems relevant to the target position
+  * INCLUDE realistic technical details, implementation approaches, and measurable outcomes
+  * MATCH project complexity to the seniority level indicated in the job description
 
 certifications: Include comprehensive, relevant credentials:
+- REQUIRED: This section MUST NEVER be left empty - generate relevant certifications if user provides none
+- Each certification object MUST include "title", "organization", and "year" fields
+- Format MUST be [{"title": "Full Certification Name", "organization": "Issuing Organization", "year": "2023"}]
 - RESEARCH industry-standard certifications for the specific role/industry
 - title: Use exact certification names from official certifying bodies
 - organization: Include the precise issuing organization
 - year: Use recent years in appropriate format
 - Include 2-4 certifications most valuable for the position
-- ADD a brief description of the certification's relevance to the role
+- If user provides no certifications:
+  * RESEARCH the most valuable certifications for this specific job role
+  * IDENTIFY industry-standard credentials that would significantly enhance the candidate's profile
+  * SELECT certifications that align with skills mentioned in the job description
+  * INCLUDE relevant certifications that would be realistic for the candidate to have based on their background
+  * ENSURE certification details are accurate with correct issuing organizations
+- NEVER output empty objects or incomplete data; always include all three required fields
+- EXAMPLE FORMAT: [{"title": "AWS Certified Solutions Architect", "organization": "Amazon Web Services", "year": "2024"}]
 
 achievements: Include detailed professional accomplishments:
+- CRITICAL: "Leadership & Achievements" section MUST NEVER be left empty - generate AT LEAST 3 achievements even if user provides none
+- ABSOLUTELY REQUIRED: The achievements array MUST ALWAYS contain at least 3 detailed achievement objects
+- REQUIRED: Each achievement MUST be a string in an array with the format [{"achievement": "Detailed achievement text"}]
+- Format MUST be [{"achievement": "First achievement with metrics"}, {"achievement": "Second achievement with metrics"}]
+- ALWAYS include leadership-focused accomplishments that demonstrate management capabilities
+- ACHIEVEMENTS MUST DIRECTLY RELATE TO THE JOB DESCRIPTION - this is essential
+- For each achievement, EXTRACT specific responsibilities, technologies, and requirements from the job description
 - ANALYZE job requirements and highlight achievements that demonstrate required competencies
 - Include 3-5 significant achievements with specific metrics and outcomes
-- FOCUS on results that directly relate to job responsibilities
+- EVERY achievement MUST reference skills, tools, or responsibilities mentioned in the job description
 - QUANTIFY impact with percentages, numbers, and business results
-- EMPHASIZE leadership, innovation, and problem-solving where relevant
-- DETAIL recognition received for accomplishments
+- EMPHASIZE leadership, innovation, and problem-solving in ways that match the job requirements
+- DETAIL recognition received for accomplishments relevant to the target role
+- CROSS-REFERENCE each achievement with the job description to ensure direct relevance
+- If user provides no achievements, CREATE relevant accomplishments based on:
+  * The EXACT technical skills, tools, and technologies mentioned in the job description
+  * The SPECIFIC job responsibilities detailed in the job description
+  * Industry standards for this EXACT role with same job title
+  * Skills and experiences mentioned elsewhere in the user profile that match job requirements
+  * Quantifiable impact that would be valuable for this exact position and industry
+  * Leadership capabilities expected for the role level in the job description
+- This section is MANDATORY and MUST include at least 3 detailed achievement objects with quantified results
+- Each achievement MUST use terminology and concepts from the job description
+- EXAMPLE FORMAT for software developer job: [{"achievement": "Improved application performance by 40% by refactoring JavaScript code and implementing React best practices specifically mentioned in job requirements"}, {"achievement": "Led team of 5 front-end developers to deliver responsive UI components using the exact tech stack (React, TypeScript, GraphQL) required for this position"}, {"achievement": "Reduced API response time by 60% through implementing efficient data caching strategies and optimizing database queries as outlined in job description"}]
+- EXAMPLE FORMAT for marketing job: [{"achievement": "Increased conversion rates by 35% through implementation of SEO strategies and content marketing techniques specifically required in job description"}, {"achievement": "Led cross-functional team to launch product campaign that increased brand engagement by 50%, utilizing the exact social media platforms mentioned in job requirements"}, {"achievement": "Developed analytics dashboard that improved campaign measurement by 40%, incorporating the data visualization tools specified in job description"}]
 
 professional development: Include relevant training and continuing education:
+- REQUIRED: This section MUST NEVER be left empty - generate professional development if user provides none
 - ADD workshops, seminars, or training directly relevant to the position
 - INCLUDE ongoing learning initiatives in required technologies/methodologies
 - DEMONSTRATE commitment to staying current in the field
+- If user provides no professional development information:
+  * RESEARCH industry-standard training programs relevant to the job requirements
+  * IDENTIFY popular workshops, bootcamps, or courses for the specific skills mentioned in job description
+  * INCLUDE relevant online learning platforms (e.g., Coursera, Udemy, LinkedIn Learning) with specific course names
+  * ADD appropriate conferences or industry events related to the field
+  * SELECT professional development activities that enhance the specific qualifications needed for this role
 
-languages: If relevant to the position:
+languages: ALWAYS include at least some language information:
+- REQUIRED: This section MUST NEVER be left empty or omitted; the output array must always contain at least one language object
+- Each language object MUST include BOTH "language" and "proficiency" fields
+- Format MUST be [{"language": "English", "proficiency": "Native"}, {"language": "Spanish", "proficiency": "Intermediate"}]
 - List languages with accurate proficiency levels
 - PRIORITIZE languages specifically mentioned in job description
 - Use standard proficiency scales (Native, Fluent, Proficient, Intermediate, Basic)
+- If no languages are provided by user or mentioned in job description:
+  * You MUST include at least one spoken language (e.g., English) with a realistic proficiency level
+  * Research common languages needed for the role/industry
+  * Add relevant regional languages based on job location if specified
+  * Include programming languages if relevant to technical positions
+- NEVER output an empty array for languages; always provide at least one complete language object
+- EXAMPLE FORMAT: [{"language": "English", "proficiency": "Native"}, {"language": "Spanish", "proficiency": "Intermediate"}]
 
 Job Description:
 "{{jobDescription}}"
@@ -161,24 +239,29 @@ User Profile:
 FINAL CHECKS:
 1. VERIFY user-provided education is copied WORD-FOR-WORD with NO changes whatsoever
 2. VERIFY user-provided work experience is copied WORD-FOR-WORD with NO changes
-3. CONFIRM the job title matches the job description exactly
-4. VERIFY the summary is comprehensive (4-6 lines) and directly addresses key job requirements
-5. ENSURE skills section includes at least 10-15 relevant skills specifically mentioned in the job description
-6. CHECK that projects have detailed descriptions (4-6 lines each) demonstrating capabilities required by the job
-7. VERIFY all content incorporates industry-specific terminology from research and job description
-8. CHECK that experience descriptions include 4-6 detailed bullet points with specific achievements
-9. VERIFY the content is relevant to the specific role being applied for
-10. ENSURE the resume positions the candidate as an expert qualified for THIS SPECIFIC job
-11. COUNT WORDS and VERIFY the total content is AT LEAST 500 WORDS
-12. ENSURE each section is thoroughly developed with comprehensive details
-13. CHECK that no placeholder text remains
+3. CONFIRM the fullName field includes "User Name | Exact Job Title from Job Description" format
+4. VERIFY the EXACT job title from job description appears next to the user's name
+5. VERIFY the summary is comprehensive (4-6 lines) and directly addresses key job requirements
+6. ENSURE skills section includes at least 10-15 relevant skills specifically mentioned in the job description
+7. CHECK that projects have detailed descriptions (4-6 lines each) demonstrating capabilities required by the job
+8. VERIFY all content incorporates industry-specific terminology from research and job description
+9. CHECK that experience descriptions include 4-6 detailed bullet points with specific achievements
+10. VERIFY the content is relevant to the specific role being applied for
+11. ENSURE the resume positions the candidate as an expert qualified for THIS SPECIFIC job
+12. COUNT WORDS and VERIFY the total content is AT LEAST 500 WORDS
+13. ENSURE each section is thoroughly developed with comprehensive details
+14. CONFIRM NO SECTIONS ARE EMPTY - especially check achievements, languages, and certifications
+15. VERIFY that "Leadership & Achievements" section contains AT LEAST 3 detailed achievements with metrics that DIRECTLY RELATE to the job description
+16. READ EACH ACHIEVEMENT and confirm it references specific skills, tools, technologies, or responsibilities from the job description
+16. VERIFY that ALL sections contain appropriate content even if user provided no information
+17. CHECK that no placeholder text remains
 
 OUTPUT FORMAT:
-Return valid JSON only with this structure:
+Return valid JSON only with this structure. DO NOT leave any section as [...] or empty arrays — fill in each section properly:
 ```json
 {
   "personalInformation": {
-    "fullName": "Example Name",
+    "fullName": "Example Name | Senior Software Engineer",
     "email": "example@email.com",
     "phoneNumber": "(123) 456-7890",
     "location": "City, State",
@@ -200,12 +283,64 @@ Return valid JSON only with this structure:
       "responsibility": "Led development of responsive web applications increasing user engagement by 35%..."
     }
   ],
-  "education": [...],
-  "projects": [...],
-  "certifications": [...],
-  "achievements": [...],
-  "languages": [...]
+  "education": [
+    {
+      "degree": "Bachelor of Science in Computer Science",
+      "university": "University of Technology",
+      "location": "San Francisco, CA",
+      "graduation": "May 2020"
+    }
+  ],
+  "projects": [
+    {
+      "title": "E-commerce Platform",
+      "description": "Developed a full-stack e-commerce platform using React, Node.js, and MongoDB. Implemented user authentication, product catalog, shopping cart, and payment processing. Optimized for performance, resulting in 40% faster page load times.",
+      "technologiesUsed": ["React", "Node.js", "Express", "MongoDB", "Stripe API"]
+    }
+  ],
+  "certifications": [
+    {
+      "title": "AWS Certified Solutions Architect",
+      "organization": "Amazon Web Services",
+      "year": "2023"
+    }
+  ],
+  "achievements": [
+    {
+      "achievement": "Increased website conversion rate by 25% through implementation of responsive design principles and optimized user experience."
+    },
+    {
+      "achievement": "Reduced infrastructure costs by 30% by migrating legacy systems to cloud-based solutions."
+    }
+  ],
+  "languages": [
+    {
+      "language": "English",
+      "proficiency": "Native"
+    },
+    {
+      "language": "Spanish",
+      "proficiency": "Intermediate"
+    }
+  ]
 }
 ```
 
+Check EVERY section before submitting! Ensure that EACH section follows the EXACT format shown above with NO empty arrays and NO missing fields.
+
+CRITICAL VALIDATION REQUIREMENTS:
+1. Verify that your languages array contains AT LEAST ONE language object with BOTH "language" and "proficiency" fields.
+2. Verify that your certifications array contains AT LEAST ONE certification object with "title", "organization", and "year" fields.
+3. Verify that your achievements array contains AT LEAST THREE detailed achievement objects WITH METRICS.
+4. TRIPLE-CHECK that each achievement DIRECTLY relates to skills, tools, or responsibilities in the job description.
+5. VERIFY that each achievement uses terminology and technologies mentioned in the job description.
+6. NEVER leave any section as an empty array [].
+7. VERIFY THAT ALL OBJECTS HAVE ALL REQUIRED FIELDS.
+8. NEVER USE PLACEHOLDER TEXT OR BLANK/NULL VALUES.
+
 Do not include any text outside the JSON code block. Ensure proper formatting with all required fields and valid syntax.
+
+FINAL FORMAT CHECK:
+1. Triple-check that the languages and certifications sections have proper objects with all required fields.
+2. Verify that NO section has [] as its value - this is considered an error.
+3. Ensure proper JSON syntax with all required brackets, quotes, and commas.

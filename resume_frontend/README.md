@@ -15,6 +15,14 @@ An AI-powered resume generator that creates job-tailored resumes through a moder
 - **Frontend (React/Vite)**: Modern UI with landing page and resume generation
 - **Backend (Java Spring Boot)**: AI-powered resume generation API
 
+## Deployment
+
+This frontend can be deployed to Vercel:
+
+1. Update `vercel.json` with your backend URL
+2. Deploy to Vercel through the dashboard or CLI
+3. See the [Vercel Deployment Guide](/vercel-deployment-guide.md) for complete instructions
+
 ## Getting Started
 
 ### Prerequisites
