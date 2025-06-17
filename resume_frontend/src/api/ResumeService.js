@@ -2,10 +2,15 @@ import axios from "axios";
 
 // Use environment variable for API URL with fallback to relative path for production
 const isProduction = import.meta.env.PROD;
-export const baseURL = import.meta.env.VITE_API_URL || 
-                      (isProduction ? "" : "http://localhost:8080");
+// For production, we don't need a prefix as the rewrite rules will handle it
+const apiBaseURL = import.meta.env.VITE_API_URL || (isProduction ? "" : "http://localhost:8080");
 
-console.log("API base URL:", baseURL);
+// Debug all variables to help with debugging
+console.log("Is Production:", isProduction);
+console.log("VITE_API_URL:", import.meta.env.VITE_API_URL);
+console.log("API base URL (final):", apiBaseURL);
+
+export const baseURL = apiBaseURL;
 
 export const axiosInstance = axios.create({
   baseURL: baseURL,
@@ -16,8 +21,21 @@ export const axiosInstance = axios.create({
   withCredentials: false
 });
 
+// Helper function to handle API paths correctly
+const getApiPath = (path) => {
+  // Add /api prefix for production if baseURL doesn't already include it
+  // and the path doesn't start with /api
+  if (import.meta.env.PROD) {
+    if (!path.startsWith('/api/')) {
+      return `/api${path}`;
+    }
+  }
+  return path;
+};
+
 export const generateResume = async (description) => {
-  const endpoint = '/api/v1/resume/generate';
+  // Use relative paths and let axiosInstance handle the baseURL
+  const endpoint = getApiPath('/v1/resume/generate');
   console.log(`Calling generateResume at: ${baseURL}${endpoint}`);
   
   const response = await axiosInstance.post(endpoint, {
@@ -28,7 +46,7 @@ export const generateResume = async (description) => {
 };
 
 export const generateTailoredResume = async (userDescription, jobDescription) => {
-  const endpoint = '/api/v1/resume/generate-tailored';
+  const endpoint = getApiPath('/v1/resume/generate-tailored');
   console.log(`Calling generateTailoredResume at: ${baseURL}${endpoint}`);
   
   const response = await axiosInstance.post(endpoint, {
@@ -40,11 +58,10 @@ export const generateTailoredResume = async (userDescription, jobDescription) =>
 };
 
 export const checkBackendHealth = async () => {
-  // Try multiple health endpoints in sequence
+  // Try multiple health endpoints in sequence, using consistent paths
   const healthEndpoints = [
-    "/api/v1/resume/health",
-    "/api/health",
-    "/health",
+    getApiPath("/v1/resume/health"),
+    getApiPath("/health"),
   ];
   
   for (const endpoint of healthEndpoints) {
@@ -111,7 +128,7 @@ export const checkBackendHealth = async () => {
 export const sendResumeToWhatsApp = async (phoneNumber, resumeData) => {
   try {
     // Try with lowercase 'whatsapp'
-    const endpoint = "/api/v1/resume/send-whatsapp";
+    const endpoint = getApiPath("/v1/resume/send-whatsapp");
     console.log("Sending WhatsApp request to:", `${baseURL}${endpoint}`);
     console.log("Phone number:", phoneNumber);
     console.log("Message length:", resumeData ? resumeData.length : 0);
@@ -126,7 +143,7 @@ export const sendResumeToWhatsApp = async (phoneNumber, resumeData) => {
     } catch (firstError) {
       console.log("First endpoint attempt failed, trying alternative endpoint");
       // Try with camelCase 'WhatsApp' as fallback
-      const altEndpoint = "/api/v1/resume/sendWhatsApp";
+      const altEndpoint = getApiPath("/v1/resume/sendWhatsApp");
       const response = await axiosInstance.post(altEndpoint, {
         phoneNumber: phoneNumber,
         resumeData: resumeData,
