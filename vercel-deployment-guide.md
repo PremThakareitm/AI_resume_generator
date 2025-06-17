@@ -7,6 +7,7 @@ This guide will help you deploy the frontend component of your resume generator 
 Vercel is primarily designed for frontend applications and serverless functions. For Spring Boot applications like our backend, platforms like Railway, Render, or Heroku are better choices. Here's how to deploy each component:
 
 1. **Build your Spring Boot application:**
+
    ```bash
    cd resume-ai-backend
    ./mvnw clean package
@@ -27,6 +28,8 @@ Vercel is primarily designed for frontend applications and serverless functions.
          "src": "/api/(.*)",
          "dest": "/api/$1"
        }
+   ```
+
 ## Backend Deployment (Using Railway - Recommended)
 
 1. **Sign up for Railway at https://railway.app/**
@@ -34,10 +37,12 @@ Vercel is primarily designed for frontend applications and serverless functions.
 2. **Connect your GitHub repository**
 
 3. **Create a new project from your GitHub repo**
+
    - Select your repository
    - Choose the `resume-ai-backend` directory
 
 4. **Configure environment variables:**
+
    - `OPENAI_API_KEY` - Your OpenAI API key
    - `SPRING_PROFILES_ACTIVE` - Set to `production`
    - `TWILIO_ACCOUNT_SID` - Your Twilio account SID (if using WhatsApp feature)
@@ -45,6 +50,7 @@ Vercel is primarily designed for frontend applications and serverless functions.
    - `TWILIO_PHONE_NUMBER` - Your Twilio phone number (if using WhatsApp feature)
 
 5. **Deploy your application**
+
    - Railway will automatically detect the Spring Boot application
 
 6. **Note the deployment URL** (e.g., `resume-ai-backend-production.up.railway.app`)
@@ -53,13 +59,17 @@ Vercel is primarily designed for frontend applications and serverless functions.
 ## Frontend Deployment (Vercel - Perfect Match)
 
 1. **Prepare your environment variables:**
+
    - Create a `.env.production` file with:
+
    ```
    VITE_API_URL=https://your-backend-url
    ```
+
    (Replace `your-backend-url` with your actual backend URL from Railway)
 
 2. **Update your frontend configuration:**
+
    - In `resume_frontend/vercel.json`, update the API destination:
 
    ```json
@@ -68,9 +78,9 @@ Vercel is primarily designed for frontend applications and serverless functions.
      "buildCommand": "npm run build",
      "outputDirectory": "dist",
      "rewrites": [
-       { 
-         "source": "/api/:path*", 
-         "destination": "https://your-backend-url/api/:path*" 
+       {
+         "source": "/api/:path*",
+         "destination": "https://your-backend-url/api/:path*"
        }
      ],
      "routes": [
@@ -123,6 +133,7 @@ public class CorsConfig implements WebMvcConfigurer {
 ### API Connection Issues
 
 If the frontend cannot connect to the backend API:
+
 1. Check the rewrites in the frontend `vercel.json`
 2. Verify environment variables are set correctly
 3. Test the backend API directly using tools like Postman
@@ -131,17 +142,20 @@ If the frontend cannot connect to the backend API:
 
 If you prefer using the command line:
 
-1. **Install Vercel CLI:** 
+1. **Install Vercel CLI:**
+
    ```bash
    npm i -g vercel
    ```
 
 2. **Login to Vercel:**
+
    ```bash
    vercel login
    ```
 
 3. **Deploy from the frontend directory:**
+
    ```bash
    cd resume_frontend
    vercel
@@ -161,6 +175,7 @@ When deploying, make sure to set these environment variables in your Vercel proj
 ## Summary
 
 This deployment strategy:
+
 1. Hosts the Spring Boot backend on Railway (recommended) or another Java-friendly platform
 2. Deploys the React frontend on Vercel
 3. Configures the frontend to communicate with the backend via API rewrites
@@ -168,6 +183,7 @@ This deployment strategy:
 By following this approach, you'll have a robust, scalable deployment that leverages the strengths of each platform while ensuring your application functions correctly.
 
 After deployment, test that:
+
 1. The frontend loads correctly
 2. API requests are properly forwarded to the backend
 3. Resume generation works end-to-end

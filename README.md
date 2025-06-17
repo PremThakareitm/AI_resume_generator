@@ -11,12 +11,20 @@ This project consists of two main parts:
 
 ## Deployment
 
-This project is set up for deployment with:
+This project is set up for deployment with multiple options:
+
+### Option 1: Deploy Frontend and Backend on Vercel (Recommended)
+
+- For the complete full-stack deployment on Vercel:
+  - See the [Vercel Full Deployment Guide](/vercel-full-deployment-guide.md)
+  - Follow step-by-step instructions in [Vercel Deployment Steps](/vercel-deployment-steps.md)
+  - Run `./prepare-vercel-deployment.sh` to prepare your project
+
+### Option 2: Split Deployment
 
 - **Frontend**: Deploy to Vercel
 - **Backend**: Deploy to Railway, Render, or other Java-friendly platforms
-
-See the [Vercel Deployment Guide](/vercel-deployment-guide.md) for complete instructions.
+- See the [Vercel Deployment Guide](/vercel-deployment-guide.md) for this approach
 
 ## Project Structure
 

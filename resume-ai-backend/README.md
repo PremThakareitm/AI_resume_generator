@@ -37,6 +37,7 @@ This backend can be deployed to Railway, Render, or other Java-friendly platform
 
 1. Clone the repository
 2. Configure environment variables:
+
    - Create a `.env` file with:
      ```
      OPENAI_API_KEY=your_openai_api_key
@@ -49,6 +50,7 @@ This backend can be deployed to Railway, Render, or other Java-friendly platform
      ```
 
 3. Build and run the application:
+
    ```bash
    ./mvnw clean install
    ./mvnw spring-boot:run
