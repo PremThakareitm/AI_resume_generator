@@ -2,15 +2,16 @@ import axios from "axios";
 
 // Use environment variable for API URL with fallback to relative path for production
 const isProduction = import.meta.env.PROD;
-// For production, we don't need a prefix as the rewrite rules will handle it
-const apiBaseURL = import.meta.env.VITE_API_URL || (isProduction ? "" : "http://localhost:8080");
+// Get base URL from env var or use default
+const rawBaseURL = import.meta.env.VITE_API_URL || (isProduction ? "" : "http://localhost:8080");
 
 // Debug all variables to help with debugging
 console.log("Is Production:", isProduction);
 console.log("VITE_API_URL:", import.meta.env.VITE_API_URL);
-console.log("API base URL (final):", apiBaseURL);
 
-export const baseURL = apiBaseURL;
+// Ensure baseURL doesn't end with /api to prevent double prefixes
+export const baseURL = rawBaseURL === "/api" ? "" : rawBaseURL;
+console.log("API base URL (final):", baseURL);
 
 export const axiosInstance = axios.create({
   baseURL: baseURL,
@@ -23,15 +24,22 @@ export const axiosInstance = axios.create({
 
 // Helper function to handle API paths correctly
 const getApiPath = (path) => {
-  // Add /api prefix for production if baseURL doesn't already include it
-  // and the path doesn't start with /api
-  if (import.meta.env.PROD) {
-    if (!path.startsWith('/api/')) {
-      return `/api${path}`;
+  // When in production and VITE_API_URL is set to '/api'
+  // we need to add /api prefix since baseURL is blank
+  if (import.meta.env.PROD && import.meta.env.VITE_API_URL === '/api') {
+    // If the path already starts with /api/, use it as is
+    if (path.startsWith('/api/')) {
+      return path;
     }
+    // Otherwise add the /api prefix
+    return `/api${path}`;
   }
+  // In all other cases, return path as is
   return path;
 };
+
+// Log a test path to debug
+console.log("Test API path for /v1/resume/health:", getApiPath("/v1/resume/health"));
 
 export const generateResume = async (description) => {
   // Use relative paths and let axiosInstance handle the baseURL
