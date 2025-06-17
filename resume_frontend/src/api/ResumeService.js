@@ -2,11 +2,13 @@ import axios from "axios";
 
 // Use environment variable for API URL with fallback to relative path for production
 const isProduction = import.meta.env.PROD;
-export const baseURLL = import.meta.env.VITE_API_URL || 
-                        (isProduction ? "/api" : "http://localhost:8080");
+export const baseURL = import.meta.env.VITE_API_URL || 
+                      (isProduction ? "" : "http://localhost:8080");
+
+console.log("API base URL:", baseURL);
 
 export const axiosInstance = axios.create({
-  baseURL: baseURLL,
+  baseURL: baseURL,
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json'
@@ -15,7 +17,10 @@ export const axiosInstance = axios.create({
 });
 
 export const generateResume = async (description) => {
-  const response = await axiosInstance.post("/api/v1/resume/generate", {
+  const endpoint = '/api/v1/resume/generate';
+  console.log(`Calling generateResume at: ${baseURL}${endpoint}`);
+  
+  const response = await axiosInstance.post(endpoint, {
     userDescription: description,
   });
 
@@ -23,7 +28,10 @@ export const generateResume = async (description) => {
 };
 
 export const generateTailoredResume = async (userDescription, jobDescription) => {
-  const response = await axiosInstance.post("/api/v1/resume/generate-tailored", {
+  const endpoint = '/api/v1/resume/generate-tailored';
+  console.log(`Calling generateTailoredResume at: ${baseURL}${endpoint}`);
+  
+  const response = await axiosInstance.post(endpoint, {
     userDescription: userDescription,
     jobDescription: jobDescription,
   });
@@ -35,23 +43,43 @@ export const checkBackendHealth = async () => {
   // Try multiple health endpoints in sequence
   const healthEndpoints = [
     "/api/v1/resume/health",
+    "/api/health",
     "/health",
-    "/"
   ];
   
   for (const endpoint of healthEndpoints) {
     try {
-      console.log(`Checking backend health at: ${baseURLL}${endpoint}`);
+      console.log(`Checking backend health at: ${baseURL}${endpoint}`);
       const response = await axiosInstance.get(endpoint, {
-        timeout: 10000 // 10 second timeout for health check
+        timeout: 10000, // 10 second timeout for health check
+        validateStatus: status => status < 500 // Accept any non-server error status
       });
-      console.log(`Health check response from ${endpoint}:`, response.data);
-      return { 
-        isHealthy: true, 
-        message: "Backend is running", 
-        endpoint: endpoint,
-        data: response.data
-      };
+      
+      // Check if response data is HTML (likely frontend, not backend)
+      const responseData = response.data;
+      const isHTML = typeof responseData === 'string' && 
+                    (responseData.trim().startsWith('<!DOCTYPE') || 
+                     responseData.trim().startsWith('<html'));
+      
+      if (isHTML) {
+        console.log(`Endpoint ${endpoint} returned HTML, not a valid backend response`);
+        continue;
+      }
+      
+      // Check if we got a valid status and JSON response
+      if (response.status === 200 && typeof responseData === 'object') {
+        console.log(`Health check response from ${endpoint}:`, response.data);
+        return { 
+          isHealthy: true, 
+          message: "Backend is running", 
+          endpoint: endpoint,
+          data: response.data
+        };
+      } else {
+        console.log(`Endpoint ${endpoint} returned non-JSON or non-200 response:`, response.status);
+        continue;
+      }
+      
     } catch (error) {
       console.error(`Health check error for ${endpoint}:`, error);
       
@@ -65,7 +93,7 @@ export const checkBackendHealth = async () => {
       if (error.code === 'ECONNREFUSED' || error.message?.includes('Network Error')) {
         return { 
           isHealthy: false, 
-          message: `Backend server is not running at ${baseURLL}`,
+          message: `Backend server is not running`,
           error: error.toString()
         };
       }
@@ -84,7 +112,7 @@ export const sendResumeToWhatsApp = async (phoneNumber, resumeData) => {
   try {
     // Try with lowercase 'whatsapp'
     const endpoint = "/api/v1/resume/send-whatsapp";
-    console.log("Sending WhatsApp request to:", `${baseURLL}${endpoint}`);
+    console.log("Sending WhatsApp request to:", `${baseURL}${endpoint}`);
     console.log("Phone number:", phoneNumber);
     console.log("Message length:", resumeData ? resumeData.length : 0);
     
