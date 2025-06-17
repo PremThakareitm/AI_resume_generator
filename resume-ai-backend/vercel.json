@@ -1,5 +1,8 @@
 {
   "version": 2,
+  "buildCommand": "./build.sh",
+  "outputDirectory": "target",
+  "framework": "other",
   "builds": [
     {
       "src": "target/*.jar",
