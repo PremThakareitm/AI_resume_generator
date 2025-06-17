@@ -24,22 +24,29 @@ export const axiosInstance = axios.create({
 
 // Helper function to handle API paths correctly
 const getApiPath = (path) => {
-  // When in production and VITE_API_URL is set to '/api'
-  // we need to add /api prefix since baseURL is blank
-  if (import.meta.env.PROD && import.meta.env.VITE_API_URL === '/api') {
-    // If the path already starts with /api/, use it as is
-    if (path.startsWith('/api/')) {
-      return path;
+  // Simplify the path handling logic
+  // Always ensure paths have /api prefix in production
+  // Remove /v1/ from the path if it exists, as it's handled by the backend
+  if (import.meta.env.PROD) {
+    // Remove any leading slashes
+    const trimmedPath = path.replace(/^\/+/, '');
+    
+    // If path already starts with api/, use it
+    if (trimmedPath.startsWith('api/')) {
+      return '/' + trimmedPath;
     }
+    
     // Otherwise add the /api prefix
-    return `/api${path}`;
+    return `/api/${trimmedPath}`;
   }
-  // In all other cases, return path as is
+  
+  // For development, use path as is
   return path;
 };
 
-// Log a test path to debug
+// Log test paths to debug
 console.log("Test API path for /v1/resume/health:", getApiPath("/v1/resume/health"));
+console.log("Test API path for /health:", getApiPath("/health"));
 
 export const generateResume = async (description) => {
   // Use relative paths and let axiosInstance handle the baseURL
@@ -66,10 +73,12 @@ export const generateTailoredResume = async (userDescription, jobDescription) =>
 };
 
 export const checkBackendHealth = async () => {
-  // Try multiple health endpoints in sequence, using consistent paths
+  // Try multiple health endpoints in sequence, using both direct and helper function paths
   const healthEndpoints = [
-    getApiPath("/v1/resume/health"),
-    getApiPath("/health"),
+    "/api/health",  // Direct path without using getApiPath
+    "/api/v1/resume/health", // Direct path without using getApiPath
+    getApiPath("health"),
+    getApiPath("v1/resume/health"),
   ];
   
   for (const endpoint of healthEndpoints) {

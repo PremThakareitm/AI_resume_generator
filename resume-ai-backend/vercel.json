@@ -11,6 +11,10 @@
   ],
   "routes": [
     {
+      "src": "/api/(.*)",
+      "dest": "target/resume-ai-backend-0.0.1-SNAPSHOT.jar"
+    },
+    {
       "src": "/(.*)",
       "dest": "target/resume-ai-backend-0.0.1-SNAPSHOT.jar"
     }

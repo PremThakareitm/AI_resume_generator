@@ -4,14 +4,6 @@
   "outputDirectory": "dist",
   "rewrites": [
     { 
-      "source": "/api/v1/:path*", 
-      "destination": "https://ai-resume-generator-three-phi.vercel.app/api/v1/:path*" 
-    },
-    { 
-      "source": "/api/health", 
-      "destination": "https://ai-resume-generator-three-phi.vercel.app/api/health" 
-    },
-    { 
       "source": "/api/:path*", 
       "destination": "https://ai-resume-generator-three-phi.vercel.app/api/:path*" 
     },
