@@ -24,19 +24,17 @@ export const axiosInstance = axios.create({
 
 // Helper function to handle API paths correctly
 const getApiPath = (path) => {
-  // Simplify the path handling logic
-  // Always ensure paths have /api prefix in production
-  // Remove /v1/ from the path if it exists, as it's handled by the backend
+  // Always ensure paths start with /api in production mode
   if (import.meta.env.PROD) {
-    // Remove any leading slashes
-    const trimmedPath = path.replace(/^\/+/, '');
-    
-    // If path already starts with api/, use it
-    if (trimmedPath.startsWith('api/')) {
-      return '/' + trimmedPath;
+    // If path already starts with /api, use it as is
+    if (path.startsWith('/api/')) {
+      return path;
     }
     
-    // Otherwise add the /api prefix
+    // Remove leading slash if present
+    const trimmedPath = path.replace(/^\/+/, '');
+    
+    // Add /api prefix
     return `/api/${trimmedPath}`;
   }
   
@@ -73,12 +71,10 @@ export const generateTailoredResume = async (userDescription, jobDescription) =>
 };
 
 export const checkBackendHealth = async () => {
-  // Try multiple health endpoints in sequence, using both direct and helper function paths
+  // Try multiple health endpoints in sequence, using simple direct paths
   const healthEndpoints = [
-    "/api/health",  // Direct path without using getApiPath
-    "/api/v1/resume/health", // Direct path without using getApiPath
-    getApiPath("health"),
-    getApiPath("v1/resume/health"),
+    "/api/health",  // Our new dedicated health endpoint
+    "/api/v1/resume/health", // Original health endpoint 
   ];
   
   for (const endpoint of healthEndpoints) {

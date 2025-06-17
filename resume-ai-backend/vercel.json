@@ -1,8 +1,7 @@
 {
   "version": 2,
-  "buildCommand": "./build.sh",
+  "buildCommand": "chmod +x ./build.sh && ./build.sh",
   "outputDirectory": "target",
-  "framework": "other",
   "builds": [
     {
       "src": "target/*.jar",
@@ -11,16 +10,11 @@
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
-      "dest": "target/resume-ai-backend-0.0.1-SNAPSHOT.jar"
-    },
-    {
       "src": "/(.*)",
       "dest": "target/resume-ai-backend-0.0.1-SNAPSHOT.jar"
     }
   ],
   "env": {
     "SPRING_PROFILES_ACTIVE": "production"
-  },
-  "regions": ["sfo1"]
+  }
 }
