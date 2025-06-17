@@ -32,20 +32,52 @@ export const generateTailoredResume = async (userDescription, jobDescription) =>
 };
 
 export const checkBackendHealth = async () => {
-  try {
-    const response = await axiosInstance.get("/api/v1/resume/health", {
-      timeout: 5000 // 5 second timeout for health check
-    });
-    return { isHealthy: true, message: "Backend is running" };
-  } catch (error) {
-    if (error.code === 'ECONNREFUSED' || error.message?.includes('Network Error')) {
-      return { isHealthy: false, message: "Backend server is not running" };
-    } else if (error.response?.status === 404) {
-      return { isHealthy: true, message: "Backend is running (health endpoint not implemented)" };
-    } else {
-      return { isHealthy: false, message: "Backend health check failed" };
+  // Try multiple health endpoints in sequence
+  const healthEndpoints = [
+    "/api/v1/resume/health",
+    "/health",
+    "/"
+  ];
+  
+  for (const endpoint of healthEndpoints) {
+    try {
+      console.log(`Checking backend health at: ${baseURLL}${endpoint}`);
+      const response = await axiosInstance.get(endpoint, {
+        timeout: 10000 // 10 second timeout for health check
+      });
+      console.log(`Health check response from ${endpoint}:`, response.data);
+      return { 
+        isHealthy: true, 
+        message: "Backend is running", 
+        endpoint: endpoint,
+        data: response.data
+      };
+    } catch (error) {
+      console.error(`Health check error for ${endpoint}:`, error);
+      
+      // If we got a 404, try the next endpoint
+      if (error.response?.status === 404) {
+        console.log(`Endpoint ${endpoint} not found, trying next...`);
+        continue;
+      }
+      
+      // For connection or network errors, stop and report failure
+      if (error.code === 'ECONNREFUSED' || error.message?.includes('Network Error')) {
+        return { 
+          isHealthy: false, 
+          message: `Backend server is not running at ${baseURLL}`,
+          error: error.toString()
+        };
+      }
     }
   }
+  
+  // If we got here, all endpoints were tried and failed
+  return { 
+    isHealthy: false, 
+    message: `Backend health check failed: No working health endpoints found`,
+    error: "All health endpoints returned errors"
+  };
 };
 
 export const sendResumeToWhatsApp = async (phoneNumber, resumeData) => {

@@ -8,10 +8,9 @@ import java.util.Map;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-@RequestMapping({"/api/v1/resume", "/api/health"})
-public class HealthCheckController {
+public class RootHealthCheckController {
 
-    @GetMapping({"/health", ""})
+    @GetMapping({"/", "/health"})
     public ResponseEntity<Map<String, Object>> healthCheck() {
         Map<String, Object> response = new HashMap<>();
         response.put("status", "healthy");

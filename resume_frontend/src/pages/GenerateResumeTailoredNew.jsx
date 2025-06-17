@@ -77,10 +77,12 @@ const GenerateResumeTailoredNew = () => {
     try {
       // Check backend health first
       const healthStatus = await checkBackendHealth();
+      console.log("Backend health status:", healthStatus);
 
       if (!healthStatus.isHealthy) {
+        toast.error(`Backend error: ${healthStatus.message}`);
         throw new Error(
-          healthStatus.message || "Backend service is not available"
+          `Backend health check failed: ${healthStatus.message || "Service not available"}`
         );
       }
 
